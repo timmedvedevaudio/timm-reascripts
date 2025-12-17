@@ -33,7 +33,7 @@
       <!-- Scripts: MIDI Editor -->
   
     <category name="midi">
-    <reapack name="timm_fit notes into the beat.lua" type=".lua" desc="timm_fit notes into the beat.lua">
+    <reapack name="timm_fit notes into the beat.lua" type="lua" desc="timm_fit notes into the beat.lua">
       <version name="1.0" author="timm" time="17-12-2025">
         <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_fit%20notes%20into%20the%20beat.lua</source>
       </version>
