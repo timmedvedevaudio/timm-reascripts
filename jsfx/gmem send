@@ -1,4 +1,4 @@
-desc:Feedback Send (Master Control)
+desc:gmem send
 slider1:1<1,32,1>Bus ID
 slider2:0<-96,6,0.1>Input Level (dB)
 slider3:-3<-12,1.5,0.05>Feedback Level (dB)
