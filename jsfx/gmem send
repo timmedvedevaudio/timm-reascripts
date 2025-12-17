@@ -1,0 +1,57 @@
+desc:Feedback Send (Master Control)
+slider1:1<1,32,1>Bus ID
+slider2:0<-96,6,0.1>Input Level (dB)
+slider3:-3<-12,1.5,0.05>Feedback Level (dB)
+slider4:0<-96,12,0.1>Dry Output Level (dB)
+
+options:gmem=LocalFeedbackLoop
+
+@init
+vol_fb = 1;
+vol_dry = 1;
+vol_in = 1;
+
+@slider
+// Calculate volumes
+slider2 <= -96 ? vol_in = 0  : vol_in  = 10^(slider2/20);
+slider3 <= -12 ? vol_fb = 0  : vol_fb  = 10^(slider3/20);
+slider4 <= -96 ? vol_dry = 0 : vol_dry = 10^(slider4/20);
+
+// Address Calculations
+offset_fb = slider1 * 50000;       // Audio: Feedback
+offset_dry = offset_fb + 25000;    // Audio: Dry Signal
+offset_ctrl = offset_fb + 49000;   // Control: Volume Data
+
+@block
+index = 0;
+
+// BROADCAST CONTROL SIGNAL
+// We write the Input Volume to memory so the Receiver can find it.
+gmem[offset_ctrl] = vol_in;
+
+@sample
+// 1. CALCULATE FEEDBACK
+feed_sig_l = spl0 * vol_fb;
+feed_sig_r = spl1 * vol_fb;
+
+// Safety Soft-Clip (+6dB)
+// Prevents digital explosions inside the loop
+feed_sig_l > 2.0 ? feed_sig_l = 2.0;
+feed_sig_l < -2.0 ? feed_sig_l = -2.0;
+feed_sig_r > 2.0 ? feed_sig_r = 2.0;
+feed_sig_r < -2.0 ? feed_sig_r = -2.0;
+
+// 2. WRITE TO MEMORY
+gmem[offset_fb + index]     = feed_sig_l;
+gmem[offset_fb + index + 1] = feed_sig_r;
+
+// 3. READ DRY SIGNAL (Teleported from start)
+dry_L = gmem[offset_dry + index];
+dry_R = gmem[offset_dry + index + 1];
+
+// 4. MIX FINAL OUTPUT
+// Output = Wet (Direct FX) + Dry (Teleported)
+spl0 = spl0 + (dry_L * vol_dry);
+spl1 = spl1 + (dry_R * vol_dry);
+
+index += 2;
