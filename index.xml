@@ -2,6 +2,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <index version="1.0" name="timm reascripts">
 
+  <!-- Effects: Feedback -->
+  
   <category name="feedback">
     <reapack name="gmem recieve" type="effect" desc="gmem recieve">
       <version name="1.1" author="timm" time="17-12-2025">
@@ -18,6 +20,8 @@
     </reapack>
   </category>
 
+    <!-- Effects: MIDI -->
+  
     <category name="midi">
     <reapack name="Midi Transform CC x16" type="effect" desc="Transform Multiple CCs (up to 16 pairs)">
       <version name="1.0" author="timm" time="17-12-2025">
@@ -25,6 +29,16 @@
       </version>
     </reapack>
   </category>
+
+      <!-- Scripts: MIDI Editor -->
+    <category name="midi">
+    <reapack name="timm_fit notes into the beat.lua" type="scripts" desc="timm_fit notes into the beat.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_fit%20notes%20into%20the%20beat.lua</source>
+      </version>
+    </reapack>
+  </category>
+      <!-- Scripts: Arrange view -->
 
   
 </index>
