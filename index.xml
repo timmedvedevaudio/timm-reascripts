@@ -39,6 +39,24 @@
       </version>
     </reapack>
   </category>
+
+    <category name="midi">
+    <reapack name="timm_move note selection left.lua" type="script" desc="timm_move note selection left.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_move%20note%20selection%20left.lua</source>
+      </version>
+    </reapack>
+  </category>
+  
+    <category name="midi">
+    <reapack name="timm_move note selection right.lua" type="script" desc="timm_move note selection right.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_move%20note%20selection%20right.lua</source>
+      </version>
+    </reapack>
+  </category>
+
+  
   
       <!-- Scripts: Arrange view -->
 
