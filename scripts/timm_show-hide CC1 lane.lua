@@ -16,7 +16,7 @@ Author: vibe coded with Gemini based on genius script by Julian Sader
 --   -1      = Velocity
 
 local lane_id       = 1 -- The ID of the lane to toggle
-local editor_height = 95  -- Height of the lane in the main MIDI Editor (pixels)
+local editor_height = 110  -- Height of the lane in the main MIDI Editor (pixels)
 local inline_height = 32  -- Height of the lane in the Inline Editor (pixels)
 -------------------------------------------------------------------------
 
