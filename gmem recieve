@@ -1,0 +1,34 @@
+desc:Feedback Receive (Slave)
+slider1:1<1,32,1>Bus ID
+
+options:gmem=LocalFeedbackLoop
+
+@init
+vol_in = 1;
+
+@slider
+// Offsets must match Master exactly
+offset_fb = slider1 * 50000;
+offset_dry = offset_fb + 25000;
+offset_ctrl = offset_fb + 49000;
+
+@block
+index = 0;
+
+// READ CONTROL SIGNAL
+vol_in = gmem[offset_ctrl];
+
+@sample
+// 1. TELEPORT DRY SIGNAL
+gmem[offset_dry + index]     = spl0;
+gmem[offset_dry + index + 1] = spl1;
+
+// 2. READ FEEDBACK
+fb_L = gmem[offset_fb + index];
+fb_R = gmem[offset_fb + index + 1];
+
+// 3. MIX INPUT + FEEDBACK
+spl0 = (spl0 * vol_in) + fb_L;
+spl1 = (spl1 * vol_in) + fb_R;
+
+index += 2;
