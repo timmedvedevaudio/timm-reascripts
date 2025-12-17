@@ -2,7 +2,7 @@
 -- First note position is kept, last note end is aligned to next beat
 
 function main()
-    -- CONFIGURATION bblbllba
+    -- CONFIGURATION
     -- Tolerance in Quarter Notes (QN). 
     -- 0.05 is roughly 1/20th of a beat. 
     -- If a note is within this range of a beat, it snaps to it for calculation.
