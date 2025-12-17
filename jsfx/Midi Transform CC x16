@@ -1,0 +1,70 @@
+desc:Transform Multiple CCs (up to 16 pairs)
+
+about:
+  Transform up to 16 CC# A into CC# B pairs.
+  Each pair: "Convert CC# → To CC#"
+
+slider1:1<1,127,1>Convert CC# 1
+slider2:1<1,127,1>To CC# 1
+slider3:2<1,127,1>Convert CC# 2
+slider4:2<1,127,1>To CC# 2
+slider5:3<1,127,1>Convert CC# 3
+slider6:3<1,127,1>To CC# 3
+slider7:4<1,127,1>Convert CC# 4
+slider8:4<1,127,1>To CC# 4
+slider9:5<1,127,1>Convert CC# 5
+slider10:5<1,127,1>To CC# 5
+slider11:6<1,127,1>Convert CC# 6
+slider12:6<1,127,1>To CC# 6
+slider13:7<1,127,1>Convert CC# 7
+slider14:7<1,127,1>To CC# 7
+slider15:8<1,127,1>Convert CC# 8
+slider16:8<1,127,1>To CC# 8
+slider17:9<1,127,1>Convert CC# 9
+slider18:9<1,127,1>To CC# 9
+slider19:10<1,127,1>Convert CC# 10
+slider20:10<1,127,1>To CC# 10
+slider21:11<1,127,1>Convert CC# 11
+slider22:11<1,127,1>To CC# 11
+slider23:12<1,127,1>Convert CC# 12
+slider24:12<1,127,1>To CC# 12
+slider25:13<1,127,1>Convert CC# 13
+slider26:13<1,127,1>To CC# 13
+slider27:14<1,127,1>Convert CC# 14
+slider28:14<1,127,1>To CC# 14
+slider29:15<1,127,1>Convert CC# 15
+slider30:15<1,127,1>To CC# 15
+slider31:16<1,127,1>Convert CC# 16
+slider32:16<1,127,1>To CC# 16
+
+in_pin:none
+out_pin:none
+
+@init
+cc = $xB0;
+
+@sample
+while (
+  midirecv(offset, msg1, msg2, msg3) ? (
+    status = msg1 & $xF0;
+    channel = msg1 & $x0F;
+
+    // only process CC messages
+    status == cc ? (
+      // loop through 16 CC pairs
+      i = 0;
+      loop(16,
+        fromCC = slider(i*2 + 1);
+        toCC   = slider(i*2 + 2);
+        (msg2 == fromCC) ? (
+          msg2 = toCC;
+          i = 16; // exit loop early after remap
+        );
+        i += 1;
+      );
+    );
+
+    midisend(offset, msg1, msg2, msg3);
+  );
+);
+
