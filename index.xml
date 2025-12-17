@@ -2,13 +2,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <index version="1.0" name="timm reascripts">
 
-  <!-- Effects -->
   <category name="feedback">
     <reapack name="gmem recieve" type="effect" desc="gmem recieve">
-      <version name="1.0" author="timm" time="17-12-2025">
+      <version name="1.1" author="timm" time="17-12-2025">
         <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/jsfx/gmem%20recieve</source>
       </version>
     </reapack>
   </category>
 
+  <category name="feedback">
+    <reapack name="gmem send" type="effect" desc="gmem send">
+      <version name="1.1" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/jsfx/gmem%20send</source>
+      </version>
+    </reapack>
+  </category>
+
+    <category name="midi">
+    <reapack name="Midi Transform CC x16" type="effect" desc="Transform Multiple CCs (up to 16 pairs)">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/jsfx/Midi%20Transform%20CC%20x16</source>
+      </version>
+    </reapack>
+  </category>
+
+  
 </index>
