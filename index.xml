@@ -31,7 +31,39 @@
   </category>
 
       <!-- Scripts: MIDI Editor -->
-  
+
+    <category name="midi">
+    <reapack name="timm_Duplicate v3.lua" type="script" desc="timm_Duplicate v3.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_Duplicate%20v3.lua</source>
+      </version>
+    </reapack>
+  </category>
+
+      <category name="midi">
+    <reapack name="timm_Duplicate v3 (skip a bar).lua" type="script" desc="timm_Duplicate v3 (skip a bar).lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_Duplicate%20v3%20(skip%20a%20bar).lua</source>
+      </version>
+    </reapack>
+  </category>
+
+        <category name="midi">
+    <reapack name="timm_create quartal voicing for selected notes.lua" type="script" desc="timm_create quartal voicing for selected notes.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_create%20quartal%20voicing%20for%20selected%20notes.lua</source>
+      </version>
+    </reapack>
+  </category>
+
+        <category name="midi">
+    <reapack name="timm_deselect all notes and events but keep track selection and editability.lua" type="script" desc="timm_deselect all notes and events but keep track selection and editability.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_deselect%20all%20notes%20and%20events%20but%20keep%20track%20selection%20and%20editability.lua</source>
+      </version>
+    </reapack>
+  </category>
+
     <category name="midi">
     <reapack name="timm_fit notes into the beat.lua" type="script" desc="timm_fit notes into the beat.lua">
       <version name="1.1" author="timm" time="17-12-2025">
@@ -55,9 +87,105 @@
       </version>
     </reapack>
   </category>
+  
+        <category name="midi">
+    <reapack name="timm_move note starts and events left 5 ms.lua" type="script" desc="timm_move note starts and events left 5 ms.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_move%20note%20starts%20and%20events%20left%205%20ms.lua</source>
+      </version>
+    </reapack>
+  </category>
+
+          <category name="midi">
+    <reapack name="timm_move note starts and events left to the closest grid.lua" type="script" desc="timm_move note starts and events left to the closest grid.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_move%20note%20starts%20and%20events%20left%20to%20the%20closest%20grid.lua</source>
+      </version>
+    </reapack>
+  </category>
+
+            <category name="midi">
+    <reapack name="timm_move note starts and events right 5 ms.lua" type="script" desc="timm_move note starts and events right 5 ms.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_move%20note%20starts%20and%20events%20right%205%20ms.lua</source>
+      </version>
+    </reapack>
+  </category>
+
+              <category name="midi">
+    <reapack name="timm_select only off beat notes.lua" type="script" desc="timm_select only off beat notes.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_select%20only%20off%20beat%20notes.lua</source>
+      </version>
+    </reapack>
+  </category>
 
   
+              <category name="midi">
+    <reapack name="timm_select only on beat notes.lua" type="script" desc="timm_select only on beat notes.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_select%20only%20on%20beat%20notes.lua</source>
+      </version>
+    </reapack>
+  </category>
+
+              <category name="midi">
+    <reapack name="timm_show-hide CC1 lane.lua" type="script" desc="timm_show-hide CC1 lane.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_select%20only%20on%20beat%20notes.lua</source>
+      </version>
+    </reapack>
+  </category>
+
   
+              <category name="midi">
+    <reapack name="timm_show-hide CC11 lane.lua" type="script" desc="timm_show-hide CC11 lane.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_show-hide%20CC11%20lane.lua</source>
+      </version>
+    </reapack>
+  </category>
+
+              <category name="midi">
+    <reapack name="timm_show-hide CC21 lane.lua" type="script" desc="timm_show-hide CC21 lane.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_show-hide%20CC21%20lane.lua</source>
+      </version>
+    </reapack>
+  </category>
+
+                <category name="midi">
+    <reapack name="timm_show-hide CC7 lane.lua" type="script" desc="timm_show-hide CC7 lane.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_show-hide%20CC7%20lane.lua</source>
+      </version>
+    </reapack>
+  </category>
+  
+                <category name="midi">
+    <reapack name="timm_show-hide CC75 lane.lua" type="script" desc="timm_show-hide CC75 lane.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_show-hide%20CC75%20lane.lua</source>
+      </version>
+    </reapack>
+  </category>
+
+                  <category name="midi">
+    <reapack name="timm_show-hide Pitch bend lane.lua" type="script" desc="timm_show-hide Pitch bend lane.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_show-hide%20Pitch%20bend%20lane.lua</source>
+      </version>
+    </reapack>
+  </category>
+
+                    <category name="midi">
+    <reapack name="timm_show-hide Sustain lane CC64.lua" type="script" desc="timm_show-hide Sustain lane CC64.lua">
+      <version name="1.0" author="timm" time="17-12-2025">
+        <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_show-hide%20Sustain%20lane%20CC64.lua</source>
+      </version>
+    </reapack>
+  </category>
+
       <!-- Scripts: Arrange view -->
 
   
