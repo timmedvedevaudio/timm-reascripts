@@ -56,7 +56,7 @@ function SelectPreviousNote()
     reaper.MIDI_SetNote(take, target_note_index, true, muted, startppq, endppq, chan, pitch, vel, true)
 
     -- Optional: Move cursor to the start of the new note
-    -- reaper.SetEditCurPos(reaper.MIDI_GetProjTimeFromPPQ(take, startppq), true, false)
+reaper.SetEditCurPos(reaper.MIDI_GetProjTimeFromPPQ(take, startppq), true, false)
 
     reaper.MIDI_Sort(take)
 end
