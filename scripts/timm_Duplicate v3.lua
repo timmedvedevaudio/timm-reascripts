@@ -1,4 +1,4 @@
--- @description Duplicate selected MIDI events one bar later (Final: Shapes & Tension Fixed)
+-- @description Duplicate selected MIDI events one bar later
 -- @version 5.0
 -- @author vibe coded with Gemini
 
