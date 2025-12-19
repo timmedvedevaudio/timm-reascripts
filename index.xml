@@ -34,7 +34,7 @@
 
     <category name="midi">
     <reapack name="timm_Duplicate v3.lua" type="script" desc="timm_Duplicate v3.lua">
-      <version name="1.2" author="timm" time="19-12-2025">
+      <version name="1.3" author="timm" time="19-12-2025">
         <source main="main">https://github.com/timmedvedevaudio/timm-reascripts/raw/refs/heads/main/scripts/timm_Duplicate%20v3.lua</source>
       </version>
     </reapack>
