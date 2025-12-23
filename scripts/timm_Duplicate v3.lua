@@ -1,8 +1,8 @@
--- @description Duplicate selected MIDI events one bar later
--- @version 5.0
--- @author vibe coded with Gemini
+-- @description Duplicate selected MIDI events to next measure (Smart Span Detection)
+-- @version 6.0
+-- @author Gemini
 
-function DuplicateOneBarLater()
+function DuplicateNextMeasure()
     local editor = reaper.MIDIEditor_GetActive()
     if not editor then return end
 
@@ -19,8 +19,9 @@ function DuplicateOneBarLater()
         t_idx = t_idx + 1
     end
 
-    -- 2. READ PHASE
+    -- 2. READ PHASE (Gather Data & Find Min/Max Times)
     local min_time = math.huge
+    local max_time = -math.huge
     local has_selection = false
     local actions = {} 
 
@@ -39,8 +40,11 @@ function DuplicateOneBarLater()
             local _, sel, muted, startppq, endppq, chan, pitch, vel = reaper.MIDI_GetNote(take, i)
             if sel then
                 has_selection = true
-                local t = reaper.MIDI_GetProjTimeFromPPQPos(take, startppq)
-                if t < min_time then min_time = t end
+                local t_start = reaper.MIDI_GetProjTimeFromPPQPos(take, startppq)
+                local t_end = reaper.MIDI_GetProjTimeFromPPQPos(take, endppq)
+                
+                if t_start < min_time then min_time = t_start end
+                if t_end > max_time then max_time = t_end end
                 
                 table.insert(take_data.notes, {
                     muted=muted, startppq=startppq, endppq=endppq, 
@@ -50,18 +54,17 @@ function DuplicateOneBarLater()
             end
         end
         
-        -- Analyze CCs (and PC, PitchBend, etc.)
+        -- Analyze CCs
         for i = 0, num_cc - 1 do
             local _, sel, muted, startppq, chanmsg, chan, msg2, msg3 = reaper.MIDI_GetCC(take, i)
             if sel then
                 has_selection = true
-                local t = reaper.MIDI_GetProjTimeFromPPQPos(take, startppq)
-                if t < min_time then min_time = t end
+                local t_start = reaper.MIDI_GetProjTimeFromPPQPos(take, startppq)
+                if t_start < min_time then min_time = t_start end
+                if t_start > max_time then max_time = t_start end
                 
-                -- CRITICAL FIX: unpacking 3 return values (boolean, shape, tension)
+                -- Capture Shape (Strict Safe Mode)
                 local shape, tension = nil, nil
-                
-                -- Only attempt to get shape for CC (176) and Pitch Bend (224)
                 if chanmsg == 176 or chanmsg == 224 then 
                     local retval
                     retval, shape, tension = reaper.MIDI_GetCCShape(take, i)
@@ -81,29 +84,47 @@ function DuplicateOneBarLater()
 
     if not has_selection then 
         reaper.PreventUIRefresh(-1)
-        reaper.Undo_EndBlock('Duplicate One Bar Later', -1)
+        reaper.Undo_EndBlock('Duplicate Next Measure', -1)
         return 
     end
 
-    -- 3. CALCULATE OFFSET (Smart Stagger)
-    local _, measure_idx = reaper.TimeMap2_timeToBeats(0, min_time)
+    -- 3. CALCULATE OFFSET (Start Measure vs End Measure)
+    -- Get BPM for tolerance calculation
     local _, _, bpm = reaper.TimeMap_GetTimeSigAtTime(0, min_time)
     if not bpm or bpm == 0 then bpm = 120 end 
+    local tolerance = (60 / bpm) / 8 -- 1/32 note tolerance
     
-    local thirty_second_note = (60 / bpm) / 8 
+    -- A. Calculate START Measure Index (with Pickup Stagger logic)
+    local _, meas_idx_start = reaper.TimeMap2_timeToBeats(0, min_time)
+    local meas_start_time = reaper.TimeMap_GetMeasureInfo(0, meas_idx_start)
+    local next_meas_time = reaper.TimeMap_GetMeasureInfo(0, meas_idx_start + 1)
     
-    local curr_meas_start = reaper.TimeMap_GetMeasureInfo(0, measure_idx)
-    local next_meas_start = reaper.TimeMap_GetMeasureInfo(0, measure_idx + 1)
-    local dist_to_next = next_meas_start - min_time
-    local is_pickup = dist_to_next <= thirty_second_note
-
-    local offset_seconds = 0
-    if is_pickup then
-        local next_next_meas_start = reaper.TimeMap_GetMeasureInfo(0, measure_idx + 2)
-        offset_seconds = next_next_meas_start - next_meas_start
-    else
-        offset_seconds = next_meas_start - curr_meas_start
+    -- If min_time is very close to the END of the bar (pickup), treat start as next bar
+    local dist_to_next = next_meas_time - min_time
+    local effective_start_meas_idx = meas_idx_start
+    if dist_to_next <= tolerance then
+        effective_start_meas_idx = meas_idx_start + 1
     end
+
+    -- B. Calculate END Measure Index
+    local _, meas_idx_end = reaper.TimeMap2_timeToBeats(0, max_time)
+    local meas_end_start_time = reaper.TimeMap_GetMeasureInfo(0, meas_idx_end)
+    
+    -- If max_time is very close to the START of a bar, it belongs to the previous bar musically
+    local effective_end_meas_idx = meas_idx_end
+    if (max_time - meas_end_start_time) <= tolerance then
+        effective_end_meas_idx = meas_idx_end - 1
+    end
+    
+    -- C. Determine Target and Offset
+    -- Target is the measure immediately following the effective end measure
+    local target_meas_idx = effective_end_meas_idx + 1
+    
+    -- Get time difference between Source Start Measure and Target Measure
+    local time_source_start = reaper.TimeMap_GetMeasureInfo(0, effective_start_meas_idx)
+    local time_target_start = reaper.TimeMap_GetMeasureInfo(0, target_meas_idx)
+    
+    local offset_seconds = time_target_start - time_source_start
 
     -- 4. WRITE PHASE
     for take, data in pairs(actions) do
@@ -121,6 +142,7 @@ function DuplicateOneBarLater()
         for _, n in ipairs(data.notes) do
             local start_t = reaper.MIDI_GetProjTimeFromPPQPos(take, n.startppq)
             local end_t = reaper.MIDI_GetProjTimeFromPPQPos(take, n.endppq)
+            
             local new_start = reaper.MIDI_GetPPQPosFromProjTime(take, start_t + offset_seconds)
             local new_end = reaper.MIDI_GetPPQPosFromProjTime(take, end_t + offset_seconds)
             
@@ -134,7 +156,6 @@ function DuplicateOneBarLater()
             
             reaper.MIDI_InsertCC(take, true, c.muted, new_start, c.chanmsg, c.chan, c.msg2, c.msg3)
             
-            -- FIX: Apply shape using the CORRECT shape number we captured
             if c.shape then
                 local _, _, current_cc_count, _ = reaper.MIDI_CountEvts(take)
                 local new_idx = current_cc_count - 1
@@ -147,7 +168,7 @@ function DuplicateOneBarLater()
 
     reaper.PreventUIRefresh(-1)
     reaper.UpdateArrange()
-    reaper.Undo_EndBlock('Duplicate One Bar Later', -1)
+    reaper.Undo_EndBlock('Duplicate Next Measure', -1)
 end
 
-DuplicateOneBarLater()
+DuplicateNextMeasure()
