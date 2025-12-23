@@ -7,6 +7,7 @@ reaper.PreventUIRefresh(1)
 
 -- Start Undo Block
 reaper.Undo_BeginBlock()
+reaper.Main_OnCommand((reaper.NamedCommandLookup("_S&M_WNCLS6")), 0)
 
 -- 1. Count all tracks in the current project
 local track_count = reaper.CountTracks(0)

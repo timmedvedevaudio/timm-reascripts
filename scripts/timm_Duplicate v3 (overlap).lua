@@ -1,8 +1,8 @@
--- @description Duplicate selected MIDI events skipping one bar (Smart Span Detection)
+-- @description Duplicate selected MIDI events with 1-bar Overlap
 -- @version 1.0
 -- @author Gemini
 
-function DuplicateSkipOneBar()
+function DuplicateOverlapOneBar()
     local editor = reaper.MIDIEditor_GetActive()
     if not editor then return end
 
@@ -83,11 +83,11 @@ function DuplicateSkipOneBar()
 
     if not has_selection then 
         reaper.PreventUIRefresh(-1)
-        reaper.Undo_EndBlock('Duplicate Skip One Bar', -1)
+        reaper.Undo_EndBlock('Duplicate Overlap One Bar', -1)
         return 
     end
 
-    -- 3. CALCULATE OFFSET (Smart Span + 1 Extra Bar)
+    -- 3. CALCULATE OFFSET (Start vs End - 1 Bar)
     local _, _, bpm = reaper.TimeMap_GetTimeSigAtTime(0, min_time)
     if not bpm or bpm == 0 then bpm = 120 end 
     local tolerance = (60 / bpm) / 8 
@@ -112,9 +112,11 @@ function DuplicateSkipOneBar()
         effective_end_meas_idx = meas_idx_end - 1
     end
     
-    -- C. Determine Target (End Measure + 2 to skip a bar)
-    -- +1 would be "Next Measure". +2 creates a 1-bar gap.
-    local target_meas_idx = effective_end_meas_idx + 2
+    -- C. Determine Target (Overlap Logic)
+    -- Regular duplicate uses: effective_end_meas_idx + 1
+    -- Overlap uses: effective_end_meas_idx
+    -- This targets the LAST measure of the current selection, creating the overlap.
+    local target_meas_idx = effective_end_meas_idx 
     
     local time_source_start = reaper.TimeMap_GetMeasureInfo(0, effective_start_meas_idx)
     local time_target_start = reaper.TimeMap_GetMeasureInfo(0, target_meas_idx)
@@ -163,7 +165,7 @@ function DuplicateSkipOneBar()
 
     reaper.PreventUIRefresh(-1)
     reaper.UpdateArrange()
-    reaper.Undo_EndBlock('Duplicate Skip One Bar', -1)
+    reaper.Undo_EndBlock('Duplicate Overlap One Bar', -1)
 end
 
-DuplicateSkipOneBar()
+DuplicateOverlapOneBar()
